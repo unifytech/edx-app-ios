@@ -77,7 +77,7 @@ class PostsViewController: UIViewController, UITableViewDataSource, UITableViewD
     var environment: Environment!
     private var paginationController : PaginationController<DiscussionThread>?
     
-    private lazy var tableView = ZeroMarginsTableView(frame: CGRectZero, style: .Plain)
+    private lazy var tableView = UITableView(frame: CGRectZero, style: .Plain)
 
     private let viewSeparator = UIView()
     private let loadController : LoadStateViewController
@@ -120,9 +120,13 @@ class PostsViewController: UIViewController, UITableViewDataSource, UITableViewD
         self.context = context
         loadController = LoadStateViewController()
         refreshController = PullRefreshController()
-        
+
         super.init(nibName: nil, bundle: nil)
-        
+
+        if #available(iOS 9.0, *) {
+            tableView.cellLayoutMarginsFollowReadableWidth = false
+        }
+
         if !self.context.allowsPosting {
             searchBar = UISearchBar()
             searchBar?.applyStandardStyles(withPlaceholder: Strings.searchAllPosts)

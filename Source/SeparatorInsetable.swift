@@ -46,10 +46,3 @@ class ZeroMarginsTableViewCell: UITableViewCell {
         get { return UIEdgeInsetsZero}
     }
 }
-
-class ZeroMarginsTableView: UITableView {
-    override var layoutMargins: UIEdgeInsets {
-        set{}
-        get { return UIEdgeInsetsZero}
-    }
-}
