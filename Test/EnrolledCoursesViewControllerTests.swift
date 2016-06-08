@@ -47,7 +47,6 @@ class EnrolledCoursesViewControllerTests: SnapshotTestCase {
     
     func testNewAppVersionAvailable() {
         let environment = TestRouterEnvironment().logInTestUser()
-        environment.mockEnrollmentManager.enrollments = []
         let controller = EnrolledCoursesViewController(environment: environment)
         
         // test initial state
@@ -64,7 +63,8 @@ class EnrolledCoursesViewControllerTests: SnapshotTestCase {
         versionInfoController.populateFromHeaders(httpResponseHeaders: VersionUpgradeDataFactory.versionUpgradeInfo)
         self.waitForExpectations()
         removable.remove()
-        
         XCTAssertTrue(controller.t_isShowingSnackBar)
+        // remove version upgrade info
+        versionInfoController.populateFromHeaders(httpResponseHeaders: [:])
     }
 }
