@@ -150,6 +150,14 @@ extension NSError {
         return NSError(domain: NetworkManager.errorDomain, code: statusCode, userInfo: userInfo)
     }
     
+    static var oex_outdatedVersionError: NSError {
+        return NSError(domain: NetworkManager.errorDomain, code: NetworkManager.Error.OutdatedVersionError.rawValue, userInfo: nil)
+    }
+    
+    public var oex_isOutdatedVersionError : Bool {
+        return self.domain == NetworkManager.errorDomain && self.code == NetworkManager.Error.OutdatedVersionError.rawValue
+    }
+    
     public var oex_isUnknownNetworkError : Bool {
         return self.domain == NetworkManager.errorDomain && self.code == NetworkManager.Error.UnknownError.rawValue
     }
@@ -163,6 +171,7 @@ public class NetworkManager : NSObject {
     private static let errorDomain = "com.edx.NetworkManager"
     enum Error : Int {
         case UnknownError = -1
+        case OutdatedVersionError = -2
     }
     
     public static let NETWORK = "NETWORK" // Logger key
@@ -186,6 +195,7 @@ public class NetworkManager : NSObject {
     }
     
     public static var unknownError : NSError { return NSError.oex_unknownNetworkError }
+    public static var outdatedVerionError : NSError { return NSError.oex_outdatedVersionError }
     
     /// Allows you to add a processing pass to any JSON response.
     /// Typically used to check for errors that can be sent by any request
@@ -402,13 +412,19 @@ public class NetworkManager : NSObject {
     public func streamForRequest<Out>(request : NetworkRequest<Out>, persistResponse : Bool = false, autoCancel : Bool = true) -> Stream<Out> {
         let stream = Sink<NetworkResult<Out>>()
         let task = self.taskForRequest(request) {[weak stream, weak self] result in
-            if let response = result.response, request = result.request where persistResponse {
-                self?.cache.setCacheResponse(response, withData: result.baseData, forRequest: request, completion: nil)
+            if let response = result.response, request = result.request, data = result.baseData where (persistResponse && data.length > 0) {
+                self?.cache.setCacheResponse(response, withData: data, forRequest: request, completion: nil)
             }
             stream?.close()
             stream?.send(result)
         }
         var result : Stream<Out> = stream.flatMap {(result : NetworkResult<Out>) -> Result<Out> in
+            if let response = result.response {
+                let statusCode = OEXHTTPStatusCode(rawValue: response.statusCode)
+                if statusCode == .Code426UpgradeRequired {
+                    return result.data.toResult(NetworkManager.outdatedVerionError)
+                }
+            }
             return result.data.toResult(result.error ?? NetworkManager.unknownError)
         }
         

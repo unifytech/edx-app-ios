@@ -142,7 +142,7 @@ class IconMessageView : UIView {
             make.top.equalTo(container)
         }
         
-        messageView.snp_updateConstraints { (make) -> Void in
+        messageView.snp_remakeConstraints { (make) -> Void in
             make.top.equalTo(self.iconView.snp_bottom).offset(IconMessageMargin)
             make.centerX.equalTo(container)
             make.width.equalTo(IconMessageTextWidth)
@@ -152,7 +152,7 @@ class IconMessageView : UIView {
         }
         
         if hasBottomButton {
-            bottomButton.snp_makeConstraints { (make) -> Void in
+            bottomButton.snp_remakeConstraints { (make) -> Void in
                 make.top.equalTo(self.messageView.snp_bottom).offset(MessageButtonMargin)
                 make.centerX.equalTo(container)
                 make.bottom.equalTo(container)
@@ -164,6 +164,18 @@ class IconMessageView : UIView {
     func showNoConnectionError() {
         self.message = Strings.networkNotAvailableMessageTrouble
         self.icon = .InternetError
+    }
+    
+    func showOutdatedVersionError() {
+        self.message = Strings.VersionUpgrade.deprecatedMessage
+        self.icon = .VersionUpgrade
+        
+        buttonInfo = MessageButtonInfo(title : Strings.VersionUpgrade.upgrade)
+        {
+            if let URL = OEXConfig.sharedConfig().iOSAppStoreURL() {
+                UIApplication.sharedApplication().openURL(URL)
+            }
+        }
     }
     
     var buttonInfo : MessageButtonInfo? {
