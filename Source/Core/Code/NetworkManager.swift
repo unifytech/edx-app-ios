@@ -142,7 +142,7 @@ public class NetworkTask : Removable {
 
 extension NSError {
     
-    static var oex_unknownNetworkError : NSError {
+    public static func oex_unknownNetworkError() -> NSError {
         return NSError(domain: NetworkManager.errorDomain, code: NetworkManager.Error.UnknownError.rawValue, userInfo: nil)
     }
     
@@ -150,20 +150,16 @@ extension NSError {
         return NSError(domain: NetworkManager.errorDomain, code: statusCode, userInfo: userInfo)
     }
     
-    static var oex_outdatedVersionError: NSError {
+    public static func oex_outdatedVersionError() -> NSError {
         return NSError(domain: NetworkManager.errorDomain, code: NetworkManager.Error.OutdatedVersionError.rawValue, userInfo: nil)
-    }
-    
-    public var oex_isOutdatedVersionError : Bool {
-        return self.domain == NetworkManager.errorDomain && self.code == NetworkManager.Error.OutdatedVersionError.rawValue
-    }
-    
-    public var oex_isUnknownNetworkError : Bool {
-        return self.domain == NetworkManager.errorDomain && self.code == NetworkManager.Error.UnknownError.rawValue
     }
     
     public var oex_isNoInternetConnectionError : Bool {
         return self.domain == NSURLErrorDomain && (self.code == NSURLErrorNotConnectedToInternet || self.code == NSURLErrorNetworkConnectionLost)
+    }
+    
+    public func errorIsThisType(error: NSError) -> Bool {
+        return error.domain == NetworkManager.errorDomain && error.code == self.code
     }
 }
 
@@ -194,8 +190,7 @@ public class NetworkManager : NSObject {
         self.cache = cache
     }
     
-    public static var unknownError : NSError { return NSError.oex_unknownNetworkError }
-    public static var outdatedVerionError : NSError { return NSError.oex_outdatedVersionError }
+    public static var unknownError : NSError { return NSError.oex_unknownNetworkError() }
     
     /// Allows you to add a processing pass to any JSON response.
     /// Typically used to check for errors that can be sent by any request
@@ -422,7 +417,7 @@ public class NetworkManager : NSObject {
             if let response = result.response {
                 let statusCode = OEXHTTPStatusCode(rawValue: response.statusCode)
                 if statusCode == .Code426UpgradeRequired {
-                    return result.data.toResult(NetworkManager.outdatedVerionError)
+                    return result.data.toResult(NSError.oex_outdatedVersionError())
                 }
             }
             return result.data.toResult(result.error ?? NetworkManager.unknownError)

@@ -111,7 +111,7 @@ class EnrolledCoursesViewController : UIViewController, CoursesTableViewControll
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         environment.analytics.trackScreenWithName(OEXAnalyticsScreenMyCourses)
-        showVersionUpgradeSnackBar()
+        showVersionUpgradeSnackBarIfNecessary()
     }
 
     private func setupListener() {
@@ -167,7 +167,7 @@ class EnrolledCoursesViewController : UIViewController, CoursesTableViewControll
         }
         
         NSNotificationCenter.defaultCenter().oex_addObserver(self, name: AppNewVersionAvailableNotification) { (notification, observer, _) -> Void in
-            observer.showVersionUpgradeSnackBar()
+            observer.showVersionUpgradeSnackBarIfNecessary()
         }
     }
     
@@ -184,9 +184,9 @@ class EnrolledCoursesViewController : UIViewController, CoursesTableViewControll
         environment.router?.showFullScreenMessageViewControllerFromViewController(self, message: Strings.courseNotListed, bottomButtonTitle: Strings.close)
     }
     
-    private func showVersionUpgradeSnackBar() {
+    private func showVersionUpgradeSnackBarIfNecessary() {
         if VersionUpgradeInfoController.sharedController.isNewVersionAvailable {
-            self.showVersionUpgradeSnackBar(Strings.VersionUpgrade.deprecatedMessage)
+            showVersionUpgradeSnackBar(Strings.VersionUpgrade.deprecatedMessage)
         }
     }
     

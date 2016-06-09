@@ -166,9 +166,9 @@ class IconMessageView : UIView {
         self.icon = .InternetError
     }
     
-    func showOutdatedVersionError() {
-        self.message = Strings.VersionUpgrade.deprecatedMessage
-        self.icon = .VersionUpgrade
+    func setupForOutdatedVersionError() {
+        message = Strings.VersionUpgrade.deprecatedMessage
+        icon = .Warning
         
         buttonInfo = MessageButtonInfo(title : Strings.VersionUpgrade.upgrade)
         {
@@ -180,10 +180,10 @@ class IconMessageView : UIView {
     
     var buttonInfo : MessageButtonInfo? {
         didSet {
-            self.bottomButton.oex_removeAllActions()
-            self.buttonTitle = buttonInfo?.title
+            bottomButton.oex_removeAllActions()
+            buttonTitle = buttonInfo?.title
             if let action = buttonInfo?.action {
-                self.bottomButton.oex_addAction({button in action() }, forEvents: .TouchUpInside)
+                bottomButton.oex_addAction({button in action() }, forEvents: .TouchUpInside)
             }
         }
     }
