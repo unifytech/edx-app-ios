@@ -132,6 +132,9 @@ class EnrolledCoursesViewController : UIViewController, CoursesTableViewControll
                 }
             case let .Failure(error):
                 self?.loadController.state = LoadState.failed(error)
+                if error.errorIsThisType(NSError.oex_outdatedVersionError()) {
+                    self?.hideSnackBar()
+                }
             }
         }
     }
@@ -187,6 +190,9 @@ class EnrolledCoursesViewController : UIViewController, CoursesTableViewControll
     private func showVersionUpgradeSnackBarIfNecessary() {
         if VersionUpgradeInfoController.sharedController.isNewVersionAvailable {
             showVersionUpgradeSnackBar(Strings.VersionUpgrade.deprecatedMessage)
+        }
+        else {
+            hideSnackBar()
         }
     }
     

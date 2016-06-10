@@ -110,9 +110,8 @@ private class VersionUpgradeView: UIView {
             container = self
         }
         
-        let size = self.systemLayoutSizeFittingSize(CGSizeMake(container!.bounds.width, CGFloat.max))
         UIView.animateWithDuration(animationDuration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.1, options: .CurveEaseOut, animations: {
-            self.transform = CGAffineTransformMakeTranslation(0, -size.height)
+            self.transform = CGAffineTransformIdentity
             }, completion: { _ in
                 container!.removeFromSuperview()
         })
@@ -192,10 +191,6 @@ extension UIViewController {
             make.edges.equalTo(container)
         }
         
-        let size = snackBarView.systemLayoutSizeFittingSize(CGSizeMake(view.bounds.width, CGFloat.max))
-        snackBarView.transform = CGAffineTransformMakeTranslation(0, -size.height)
-        container.layoutIfNeeded()
-        
         let hideAction = {[weak self] in
             let hideInfo = objc_getAssociatedObject(self, &SnackBarHideActionKey) as? Box<TemporaryViewRemovalInfo>
             if hideInfo?.value.container == container {
@@ -203,7 +198,7 @@ extension UIViewController {
             }
             
             UIView.animateWithDuration(animationDuration, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.1, options: .CurveEaseOut, animations: {
-                snackBarView.transform = CGAffineTransformMakeTranslation(0, -size.height)
+                snackBarView.transform = CGAffineTransformIdentity
                 }, completion: { _ in
                     container.removeFromSuperview()
             })
@@ -223,6 +218,11 @@ extension UIViewController {
         hideInfo?.value.action()
         let view = VersionUpgradeView(message: string)
         showSnackBarView(view)
+    }
+    
+    func hideSnackBar() {
+        let hideInfo = objc_getAssociatedObject(self, &SnackBarHideActionKey) as? Box<TemporaryViewRemovalInfo>
+        hideInfo?.value.action()
     }
 }
 

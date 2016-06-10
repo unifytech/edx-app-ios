@@ -6,8 +6,8 @@
 //  Copyright © 2016 edX. All rights reserved.
 //
 
-let AppLatestVersionKey = "EDX-APP-LATEST-VERSION"
-let AppVersionLastSupportedDateKey = "EDX-APP-VERSION-LAST-SUPPORTED-DATE"
+private let AppLatestVersionKey = "EDX-APP-LATEST-VERSION"
+private let AppVersionLastSupportedDateKey = "EDX-APP-VERSION-LAST-SUPPORTED-DATE"
 let AppNewVersionAvailableNotification = "AppNewVersionAvailableNotification"
 
 class VersionUpgradeInfoController: NSObject {
@@ -16,9 +16,8 @@ class VersionUpgradeInfoController: NSObject {
     private(set) var isNewVersionAvailable:Bool = false
     private(set) var latestVersion:String?
     private(set) var lastSupportedDateString:String?
-    private var postNotification:Bool = false
     
-    private func defaultState() {
+    private func returnToDefaultState() {
         isNewVersionAvailable = false
         latestVersion = nil
         lastSupportedDateString = nil
@@ -29,11 +28,13 @@ class VersionUpgradeInfoController: NSObject {
         guard let responseHeaders = headers else {
             if isNewVersionAvailable {
                 // if version upgrade header is showing then hide it
-                defaultState()
+                returnToDefaultState()
                 postVersionUpgradeNotification()
             }
             return
         }
+        
+        var postNotification:Bool = false
         
         if let appLatestVersion = responseHeaders[AppLatestVersionKey] as? String {
             postNotification = latestVersion != appLatestVersion
@@ -43,7 +44,7 @@ class VersionUpgradeInfoController: NSObject {
         else {
             // In case if server stop sending version upgrade info
             if isNewVersionAvailable {
-                defaultState()
+                returnToDefaultState()
                 postNotification = true
             }
         }
