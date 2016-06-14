@@ -32,14 +32,8 @@ extension NetworkManager {
     }
     
     static func deprecatedVersionInterceptor(router: OEXRouter?, response: NSHTTPURLResponse, json: JSON) -> Result<JSON> {
-        guard let statusCode = OEXHTTPStatusCode(rawValue: response.statusCode),
-            error = NSError(json: json, code: response.statusCode)
-            where statusCode == .Code426UpgradeRequired else
-        {
-            let versionController = VersionUpgradeInfoController.sharedController
-            versionController.populateFromHeaders(httpResponseHeaders: response.allHeaderFields)
-            return Success(json)
-        }
-        return Failure(error)
+        let versionController = VersionUpgradeInfoController.sharedController
+        versionController.populateFromHeaders(httpResponseHeaders: response.allHeaderFields)
+        return Success(json)
     }
 }
