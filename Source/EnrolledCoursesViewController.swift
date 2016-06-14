@@ -188,8 +188,12 @@ class EnrolledCoursesViewController : UIViewController, CoursesTableViewControll
     }
     
     private func showVersionUpgradeSnackBarIfNecessary() {
-        if VersionUpgradeInfoController.sharedController.isNewVersionAvailable {
-            showVersionUpgradeSnackBar(Strings.VersionUpgrade.deprecatedMessage)
+        if let _ = VersionUpgradeInfoController.sharedController.latestVersion {
+            var infoString = Strings.VersionUpgrade.newVersionAvailable
+            if let _ = VersionUpgradeInfoController.sharedController.lastSupportedDateString {
+                infoString = Strings.VersionUpgrade.deprecatedMessage
+            }
+            showVersionUpgradeSnackBar(infoString)
         }
         else {
             hideSnackBar()

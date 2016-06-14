@@ -13,12 +13,10 @@ let AppNewVersionAvailableNotification = "AppNewVersionAvailableNotification"
 class VersionUpgradeInfoController: NSObject {
     
     static let sharedController = VersionUpgradeInfoController()
-    private(set) var isNewVersionAvailable:Bool = false
     private(set) var latestVersion:String?
     private(set) var lastSupportedDateString:String?
     
     private func returnToDefaultState() {
-        isNewVersionAvailable = false
         latestVersion = nil
         lastSupportedDateString = nil
     }
@@ -26,8 +24,8 @@ class VersionUpgradeInfoController: NSObject {
     func populateFromHeaders(httpResponseHeaders headers: [NSObject : AnyObject]?) {
         
         guard let responseHeaders = headers else {
-            if isNewVersionAvailable {
-                // if version upgrade header is showing then hide it
+            if let _ = latestVersion {
+                // if server stop sending header information in response and version upgrade header is showing then hide it
                 returnToDefaultState()
                 postVersionUpgradeNotification()
             }
@@ -39,11 +37,10 @@ class VersionUpgradeInfoController: NSObject {
         if let appLatestVersion = responseHeaders[AppLatestVersionKey] as? String {
             postNotification = latestVersion != appLatestVersion
             latestVersion = appLatestVersion
-            isNewVersionAvailable = true
         }
         else {
-            // In case if server stop sending version upgrade info
-            if isNewVersionAvailable {
+            // In case if server stop sending version upgrade info in headers
+            if let _ = latestVersion {
                 returnToDefaultState()
                 postNotification = true
             }
