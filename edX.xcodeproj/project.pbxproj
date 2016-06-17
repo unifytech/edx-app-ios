@@ -643,6 +643,7 @@
 		E0816D7E1CBE35D300818769 /* FindCoursesInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0816D771CBE356E00818769 /* FindCoursesInteractor.swift */; };
 		E0816D7F1CBE35DA00818769 /* FindCoursesTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0816D7B1CBE358900818769 /* FindCoursesTestCase.swift */; };
 		E08A008B1CF7546200F92DE7 /* DiscussionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08A008A1CF7546200F92DE7 /* DiscussionModel.swift */; };
+		E08A4FBD1D14072700B1A40A /* NetworkManager+ResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E08A4FB71D13FAC900B1A40A /* NetworkManager+ResponseHandler.swift */; };
 		E09B9D6B1D06C9700080BAE0 /* VersionUpgradeInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09B9D6A1D06C9700080BAE0 /* VersionUpgradeInfoController.swift */; };
 		E09B9D6E1D06D79F0080BAE0 /* VersionUpgradeInfoControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09B9D6C1D06D6C40080BAE0 /* VersionUpgradeInfoControllerTests.swift */; };
 		E09B9D701D06D8010080BAE0 /* VersionUpgradeDataFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09B9D6F1D06D8010080BAE0 /* VersionUpgradeDataFactory.swift */; };
@@ -1504,6 +1505,7 @@
 		E0816D781CBE356E00818769 /* NavigationDrawerInteractor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationDrawerInteractor.swift; sourceTree = "<group>"; };
 		E0816D7B1CBE358900818769 /* FindCoursesTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindCoursesTestCase.swift; sourceTree = "<group>"; };
 		E08A008A1CF7546200F92DE7 /* DiscussionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscussionModel.swift; sourceTree = "<group>"; };
+		E08A4FB71D13FAC900B1A40A /* NetworkManager+ResponseHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NetworkManager+ResponseHandler.swift"; sourceTree = "<group>"; };
 		E09B9D6A1D06C9700080BAE0 /* VersionUpgradeInfoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionUpgradeInfoController.swift; sourceTree = "<group>"; };
 		E09B9D6C1D06D6C40080BAE0 /* VersionUpgradeInfoControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionUpgradeInfoControllerTests.swift; sourceTree = "<group>"; };
 		E09B9D6F1D06D8010080BAE0 /* VersionUpgradeDataFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionUpgradeDataFactory.swift; sourceTree = "<group>"; };
@@ -3224,6 +3226,7 @@
 				9ED168AD1B29A4ED00AA7B5B /* UserAPI.swift */,
 				9EDCC51D1B395BDE00A4F39D /* CourseInfoAPI.swift */,
 				F22A0ABA1CE60D5E00D50DFF /* NetworkManager+Authenticators.swift */,
+				E08A4FB71D13FAC900B1A40A /* NetworkManager+ResponseHandler.swift */,
 			);
 			name = Network;
 			sourceTree = "<group>";
@@ -3765,6 +3768,7 @@
 				772856E11CADC5DB00460E7C /* RawStringExtractable.swift in Sources */,
 				77E647D01C90CABD00B6740D /* NSString+OEXFormatting.m in Sources */,
 				771D65D11C922FC800112B7E /* StreamWaitOperation.swift in Sources */,
+				E08A4FBD1D14072700B1A40A /* NetworkManager+ResponseHandler.swift in Sources */,
 				77E6487D1C91337300B6740D /* Alamofire.swift in Sources */,
 				771D65D31C922FD400112B7E /* Operation.swift in Sources */,
 				771D65D91C92300000112B7E /* Box.swift in Sources */,

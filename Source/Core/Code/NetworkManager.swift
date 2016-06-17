@@ -414,13 +414,7 @@ public class NetworkManager : NSObject {
             stream?.send(result)
         }
         var result : Stream<Out> = stream.flatMap {(result : NetworkResult<Out>) -> Result<Out> in
-            if let response = result.response {
-                let statusCode = OEXHTTPStatusCode(rawValue: response.statusCode)
-                if statusCode == .Code426UpgradeRequired {
-                    return result.data.toResult(NSError.oex_outdatedVersionError())
-                }
-            }
-            return result.data.toResult(result.error ?? NetworkManager.unknownError)
+            return NetworkManager.handlesResponse(result)
         }
         
         if persistResponse {
